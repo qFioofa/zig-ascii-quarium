@@ -1,9 +1,18 @@
-const FrameModule = @import("Frame.zig");
+const std = @import("std");
 
-const 
+const FrameModule = @import("../../share.zig").FrameModule;
+const Cell = FrameModule.Cell;
 
 const tty = struct {
-    pub fn printFrame() !void{
+    stdout: std.fs.File,
 
+    pub fn init() tty {
+        return .{
+            .stdout = std.io.getStdOut(),
+        };
+    }
+
+    pub fn printCell(self: *const tty, cell: *const Cell) !void {
+        try self.stdout.writer().print("{}", .{cell});
     }
 };
